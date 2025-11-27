@@ -13,11 +13,20 @@
   transition: all .2s;
 }
 
-.card2:hover {
+.card.has-turn {
+  box-shadow: 0 0 30px 1px var(--player-color);
+}
+
+.card2.has-turn {
   transform: scale(0.98);
   border-radius: 20px;
 }
 
-.card:hover {
-  box-shadow: 0 0 30px 1px var(--player-color);
+.player-container{
+  padding: 0.5rem;
+}
+
+.player-title{
+  text-align: center;
+  font-size: 1rem;
 }

@@ -1,4 +1,7 @@
-<div class="card">
-  <div class="card2">
+<div class="card" [class.has-turn]="hasTurn()">
+  <div class="card2" [class.has-turn]="hasTurn()">
+    <div class="player-container">
+      <p class="player-title">{{playerName()}}</p>
+    </div>
   </div>
 </div>
