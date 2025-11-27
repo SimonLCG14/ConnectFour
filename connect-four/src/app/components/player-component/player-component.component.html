@@ -2,6 +2,16 @@
   <div class="card2" [class.has-turn]="hasTurn()">
     <div class="player-container">
       <p class="player-text">{{playerName()}}</p>
+
+      <!-- Disks -->
+      <div class="disk-container">
+        @for(disk of remainingDisks(); track $index){
+          <div class="disk-item">
+            <span class="item" [style.background-color]="disk.color"></span>
+          </div>
+        }
+      </div>
+
       <p class="player-text">Remaining Disks: {{amountOfDisks()}}</p>
     </div>
   </div>
