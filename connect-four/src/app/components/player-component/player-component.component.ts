@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, input, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, input, OnInit, signal} from '@angular/core';
 import {Disk} from '../../model/disk';
 
 @Component({
@@ -19,6 +19,8 @@ export class PlayerComponentComponent implements OnInit{
   playerName = input<string>('No name');
 
   remainingDisks = signal<Disk[]>([]);
+
+  amountOfDisks = computed(() => this.remainingDisks().length);
 
   ngOnInit() {
     for (let i = 0; i < this.AMOUNT_OF_DISKS; i++){

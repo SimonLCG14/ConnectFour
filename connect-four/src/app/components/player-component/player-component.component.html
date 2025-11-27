@@ -1,7 +1,8 @@
 <div class="card" [class.has-turn]="hasTurn()">
   <div class="card2" [class.has-turn]="hasTurn()">
     <div class="player-container">
-      <p class="player-title">{{playerName()}}</p>
+      <p class="player-text">{{playerName()}}</p>
+      <p class="player-text">Remaining Disks: {{amountOfDisks()}}</p>
     </div>
   </div>
 </div>
