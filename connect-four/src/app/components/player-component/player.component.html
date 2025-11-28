@@ -6,9 +6,7 @@
       <!-- Disks -->
       <div class="disk-container">
         @for(disk of remainingDisks(); track $index){
-          <div class="disk-item">
-            <span class="item" [style.background-color]="disk.color"></span>
-          </div>
+          <app-disk [disk]="disk"></app-disk>
         }
       </div>
 

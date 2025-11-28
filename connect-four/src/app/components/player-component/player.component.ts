@@ -1,9 +1,12 @@
 import {ChangeDetectionStrategy, Component, computed, input, OnInit, signal} from '@angular/core';
 import {Disk} from '../../model/disk';
+import {DiskComponent} from '../disk/disk.component';
 
 @Component({
   selector: 'app-player',
-  imports: [],
+  imports: [
+    DiskComponent
+  ],
   templateUrl: './player.component.html',
   styleUrl: './player.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

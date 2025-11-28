@@ -1,0 +1,12 @@
+.disk-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
