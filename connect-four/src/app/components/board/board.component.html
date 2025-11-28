@@ -1,0 +1,11 @@
+<div class="board-grid">
+  @for(row of board(); track row; let rowIndex = $index){
+    @for (cell of row; track cell.id; let colIndex = $index) {
+      <div class="board-cell"
+           [style.background-color]="cell.color !== 'empty' ? cell.color : '#eee'"
+           [attr.data-row]="rowIndex"
+           [attr.data-col]="colIndex">
+      </div>
+    }
+  }
+</div>

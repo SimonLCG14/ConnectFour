@@ -2,16 +2,16 @@ import {ChangeDetectionStrategy, Component, computed, input, OnInit, signal} fro
 import {Disk} from '../../model/disk';
 
 @Component({
-  selector: 'app-player-component',
+  selector: 'app-player',
   imports: [],
-  templateUrl: './player-component.component.html',
-  styleUrl: './player-component.component.scss',
+  templateUrl: './player.component.html',
+  styleUrl: './player.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[style.--player-color]': 'color()'
   },
 })
-export class PlayerComponentComponent implements OnInit{
+export class PlayerComponent implements OnInit{
   private readonly AMOUNT_OF_DISKS: number = 21;
 
   color = input<string>('#f54542');
