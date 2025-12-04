@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, input, OnInit, signal} from '@angular/core';
-import {Disk} from '../../model/disk';
+import {Disk, getNextId} from '../../model/disk';
 import {DiskComponent} from '../disk/disk.component';
 
 @Component({
@@ -27,7 +27,7 @@ export class PlayerComponent implements OnInit{
 
   ngOnInit() {
     for (let i = 0; i < this.AMOUNT_OF_DISKS; i++){
-      this.remainingDisks().push({id: i, color: this.color()});
+      this.remainingDisks().push({color: this.color(), id: getNextId()});
     }
   }
 }

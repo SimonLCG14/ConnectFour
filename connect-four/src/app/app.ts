@@ -5,7 +5,7 @@ import {GameWindowComponent} from './components/game-window/game-window.componen
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, PlayerComponent, GameWindowComponent],
+  imports: [RouterOutlet, GameWindowComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
