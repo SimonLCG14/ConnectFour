@@ -3,11 +3,13 @@ import {DiskComponent} from '../disk/disk.component';
 import {BoardService} from '../../services/board.service';
 import {Field} from '../../model/field';
 import {Player} from '../../model/player';
+import {FieldColumnComponent} from '../field-column/field-column.component';
 
 @Component({
   selector: 'app-board',
   imports: [
-    DiskComponent
+    DiskComponent,
+    FieldColumnComponent
   ],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',

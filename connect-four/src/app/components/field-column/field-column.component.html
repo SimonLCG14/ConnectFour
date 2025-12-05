@@ -1,0 +1,12 @@
+<div class="field-column">
+  @for (field of fields(); track $index) {
+    @switch (field){
+      @case (Field.RED){
+        <app-disk [disk]="{color: 'red'}"></app-disk>
+      }
+      @case (Field.BLUE){
+        <app-disk [disk]="{color: 'blue'}"></app-disk>
+      }
+    }
+  }
+</div>
