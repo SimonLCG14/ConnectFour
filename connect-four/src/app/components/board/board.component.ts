@@ -4,12 +4,16 @@ import {BoardService} from '../../services/board.service';
 import {Field} from '../../model/field';
 import {Player} from '../../model/player';
 import {FieldColumnComponent} from '../field-column/field-column.component';
+import {NgOptimizedImage} from '@angular/common';
+import {AddButtonComponent} from '../add-button/add-button.component';
 
 @Component({
   selector: 'app-board',
   imports: [
     DiskComponent,
-    FieldColumnComponent
+    FieldColumnComponent,
+    NgOptimizedImage,
+    AddButtonComponent
   ],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',

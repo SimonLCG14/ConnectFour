@@ -1,6 +1,9 @@
 <div class="board-grid">
   @for (row of reversedBoard(); track $index; let rowIndex = $index) {
-    <app-field-column [fields]="row"></app-field-column>
+    <div class="container">
+      <app-add-button class="button"></app-add-button>
+      <app-field-column [fields]="row" class="column"></app-field-column>
+    </div>
   }
 </div>
 
