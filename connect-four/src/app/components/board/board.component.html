@@ -1,5 +1,5 @@
 <div class="board-grid">
-  @for (row of boardService.board(); track $index; let rowIndex = $index) {
+  @for (row of reversedBoard(); track $index; let rowIndex = $index) {
     <app-field-column [fields]="row"></app-field-column>
   }
 </div>

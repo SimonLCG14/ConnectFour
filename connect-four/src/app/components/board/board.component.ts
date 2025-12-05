@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
 import {DiskComponent} from '../disk/disk.component';
 import {BoardService} from '../../services/board.service';
 import {Field} from '../../model/field';
@@ -19,4 +19,7 @@ export class BoardComponent {
   boardService = inject(BoardService);
   protected readonly Field = Field;
   protected readonly Player = Player;
+  reversedBoard = computed(() => {
+    return [...this.boardService.board()].map(row => [...row].reverse());
+  })
 }
