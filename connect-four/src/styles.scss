@@ -1,46 +1,44 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
+/*
+ * The palette comes from the 1974 Milton Bradley box: a blue rack, red and yellow checkers,
+ * flat colour and thick black keylines on off-white board. No gradients, no soft shadows —
+ * depth is a hard offset block instead.
+ */
+:root {
+  --paper: #fbf7f0;
+  --ink: #14110e;
+  --rack: #1b54a8;
+  --red: #e5342a;
+  --yellow: #f2b705;
 
-html {
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+  --keyline: 3px;
+  --offset: 6px;
+
+  --font-ui: Outfit, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: Fraunces, Georgia, 'Times New Roman', serif;
 }
-
-body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
-  margin: 0;
-}
-/* You can add global styles to this file, and also import other style files */
 
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  color-scheme: light;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* The heavy, slightly odd poster serif that carries the period. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-variation-settings:
+    'SOFT' 30,
+    'WONK' 1;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
 }

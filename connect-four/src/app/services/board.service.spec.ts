@@ -46,6 +46,35 @@ describe('BoardService', () => {
     });
   });
 
+  describe('nextRow', () => {
+    it('reports row 0 for an empty column', () => {
+      expect(service.nextRow(3)).toBe(0);
+    });
+
+    it('reports the next free row of a partly filled column', () => {
+      service.drop(3, Field.PLAYER_ONE);
+      service.drop(3, Field.PLAYER_TWO);
+
+      expect(service.nextRow(3)).toBe(2);
+    });
+
+    it('reports nothing for a full or out-of-range column', () => {
+      fillColumn(3);
+
+      expect(service.nextRow(3)).toBeNull();
+      expect(service.nextRow(-1)).toBeNull();
+      expect(service.nextRow(7)).toBeNull();
+    });
+
+    it('does not change the board', () => {
+      const before = service.board();
+
+      service.nextRow(3);
+
+      expect(service.board()).toBe(before);
+    });
+  });
+
   describe('drop', () => {
     it('lands the first disk of a column on row 0', () => {
       expect(service.drop(3, Field.PLAYER_ONE)).toBe(0);

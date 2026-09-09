@@ -1,4 +1,21 @@
 @if (game.players(); as players) {
+  <header class="masthead">
+    <p class="wordmark display">Connect Four</p>
+
+    @if (game.currentPlayer(); as player) {
+      @if (!game.isOver()) {
+        <!-- The card lift shows whose turn it is; this says it in words, and announces changes.
+             It leaves the flow once the game is over: the layout already reflows to make room
+             for the result banner, so nothing extra jumps and the space is put to use. -->
+        <p class="turn" aria-live="polite">
+          <span class="turn-disk" [style.background-color]="player.color"></span>
+          <span class="turn-name">{{ player.name }}</span>
+          <span class="turn-verb">to play</span>
+        </p>
+      }
+    }
+  </header>
+
   <div class="container">
     <app-player
       id="player1"

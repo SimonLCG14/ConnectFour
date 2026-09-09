@@ -18,8 +18,9 @@ Run every `npm`/`ng` command from `connect-four/`, not from the repo root.
   `noImplicitReturns`.
 - Use `input()` / `input.required()` / `output()` and `inject()` — not the `@Input`/`@Output`
   decorators or constructor injection.
-- Angular Material 20 is a dependency and themed in `src/styles.scss` via `mat.theme()`, but no
-  Material component is used yet — components are hand-rolled SCSS over the `--mat-sys-*` variables.
+- `@angular/material` and `@angular/cdk` are installed but **unused** — no Material component,
+  icon or theme. `src/styles.scss` defines the palette itself; don't reintroduce `mat.theme()`
+  without converting the tokens below.
 
 ## Naming
 
@@ -43,6 +44,9 @@ Two root-provided services split the game in half, and every component reads fro
 Root-provided means game state survives router navigation between `/setup` and `/game`;
 `gameConfiguredGuard` keeps `/game` unreachable until two players are seated.
 
+`BoardService.nextRow()` reads where a disk would land without playing it — that is what the
+hover preview uses, and `drop()` is built on it.
+
 ### Board data model
 
 `BoardService.board` is a `signal<Field[][]>` indexed **column-major and bottom-up**:
@@ -53,12 +57,29 @@ downstream has to invert anything again.
 `drop` replaces the outer array and the touched column rather than mutating in place — required
 under zoneless change detection, and asserted by a spec. Keep that pattern.
 
+### Design tokens
+
+`src/styles.scss` owns the whole palette as custom properties — `--paper`, `--ink`, `--rack`,
+`--red`, `--yellow`, plus `--keyline` (one border width everywhere) and `--offset` (the hard
+offset block that stands in for a shadow). The look is 1974 box art: flat colour, thick black
+keylines, no gradients and no blurred shadows. Components read the tokens; they never hardcode a
+colour. Fraunces (`--font-display`, applied with the global `.display` class) carries headings and
+player names, Outfit (`--font-ui`) everything else.
+
+Board sizing keys off `--slot-size` on `.board`, a viewport-driven `clamp()`; every other board
+measurement is a multiple of it, so the rack scales as one piece.
+
 ### Drop animation
 
 `animate.enter` only fires when an element **enters the DOM**, so `field-column.component.html`
 renders the empty hole always and the `<app-disk>` conditionally. The fall distance comes from the
-slot's top-down index, passed down as the `--fall-slots` custom property. Rendering an
-always-present disk that merely changes colour would silently kill the animation.
+slot's top-down index, passed down as `--fall-slots`. Duration comes from
+`FieldColumnComponent.fallMs()` rather than CSS, because falling under gravity scales with the
+square root of the height and CSS cannot compute that. Rendering an always-present disk that
+merely changes colour would silently kill the animation.
+
+`BoardComponent.columns` tags each slot with `winningIndex` (its place in the winning line, or
+-1), which drives the staggered one-shot celebration.
 
 ## Testing
 
@@ -68,6 +89,9 @@ verified in the browser.
 
 Note that an empty suite still reports `SUCCESS` — check the executed count, not just the exit
 status, when specs appear to pass suspiciously fast.
+
+`npm test` does **not** catch every template error: a `[maxlength]` binding that `ng build`
+rejects with NG8002 sailed through the spec run. Run `npx ng build` after touching a template.
 
 ## Lint and format
 

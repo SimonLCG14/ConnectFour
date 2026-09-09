@@ -1,80 +1,98 @@
-/* The gradient sits in the padding, so it reads as a border around the surface. */
 .card {
-  display: flex;
-  width: 100%;
-  padding: 3px;
-  border-radius: 20px;
-  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 15%, transparent);
-  transition:
-    background-image 0.3s,
-    opacity 0.3s;
-}
-
-/* Only the player to move gets the gradient ring; the other one steps back. */
-.card.has-turn {
-  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
-}
-
-.card:not(.has-turn) {
-  opacity: 0.7;
-}
-
-.card2 {
-  flex: 1;
-  min-width: 0;
-  border-radius: 18px;
-  background-color: var(--mat-sys-surface);
-}
-
-.player-container {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1.25rem 1rem;
+  padding: 1.5rem 1.15rem;
+
+  background-color: var(--paper);
+  border: var(--keyline) solid var(--ink);
+  border-radius: 0.75rem;
+  /* A hard offset block, not a shadow — flat, and period-correct. */
+  box-shadow: 0 0 0 var(--ink);
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
 }
 
-.player-text {
+/* The player to move lifts onto its block. */
+.card.has-turn {
+  box-shadow: var(--offset) var(--offset) 0 var(--ink);
+  transform: translate(calc(var(--offset) * -0.5), calc(var(--offset) * -0.5));
+}
+
+.card:not(.has-turn) {
+  opacity: 0.72;
+}
+
+.name {
   margin: 0;
   text-align: center;
-}
-
-.player-name {
-  font-size: 1.5rem;
-  line-height: 1.2;
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
   overflow-wrap: anywhere;
-}
-
-.remaining {
-  font-size: 0.95rem;
-  opacity: 0.7;
 }
 
 .disk-container {
   --disk-size: 100%;
+  --disk-keyline: 2px;
 
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.4rem;
-  max-width: 14rem;
-  margin: 0 auto;
+  gap: 0.35rem;
+  max-width: 15rem;
   width: 100%;
+  margin: 0 auto;
 }
 
-.turn {
+/* The next disk off the pile sits proud while it is your turn. */
+.card.has-turn .disk-container app-disk:first-child {
+  animation: proud 2.4s ease-in-out infinite;
+}
+
+@keyframes proud {
+  0%,
+  70%,
+  100% {
+    transform: translateY(0);
+  }
+  85% {
+    transform: translateY(-18%);
+  }
+}
+
+.remaining {
   margin: 0;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--player-color);
-  visibility: hidden;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.4rem;
 }
 
-.turn.visible {
-  visibility: visible;
+.count {
+  font-size: 1.9rem;
+}
+
+.count-label {
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  opacity: 0.65;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .card {
     transition: none;
   }
+
+  .card.has-turn .disk-container app-disk:first-child {
+    animation: none;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

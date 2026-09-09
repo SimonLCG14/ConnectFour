@@ -1,118 +1,127 @@
-.backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  display: grid;
-  /* Sits below the board so the winning line stays visible. */
-  place-items: end center;
-  padding: 1rem 1rem 8vh;
-  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 45%, transparent);
-}
-
-.card {
-  width: min(26rem, 100%);
-  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
-  border-radius: 20px;
-  padding: 3px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0 20px 50px -10px;
-}
-
-.card-inner {
+/* In normal flow, not fixed: the page centres the board and the banner together, so the
+   banner can never land on top of the winning line however short the window is. */
+.banner {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
-  padding: 2rem 1.5rem;
-  border-radius: 18px;
-  background-color: var(--mat-sys-surface);
-  text-align: center;
+  justify-content: center;
+  gap: 1rem 2rem;
+  padding: 1rem 1.5rem;
+
+  background-color: var(--paper);
+  border: var(--keyline) solid var(--ink);
+  border-radius: 0.75rem;
+  box-shadow: var(--offset) var(--offset) 0 var(--ink);
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
 }
 
 .marker {
-  width: 3rem;
-  height: 3rem;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: 50%;
-  margin-bottom: 0.5rem;
+  border: var(--keyline) solid var(--ink);
+  box-sizing: border-box;
 }
 
 .headline {
   margin: 0;
-  font-size: 2rem;
-  font-weight: 300;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
 }
 
 .detail {
   margin: 0;
-  opacity: 0.7;
+  opacity: 0.65;
+  font-size: 0.95rem;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 0.75rem;
-  margin-top: 1.5rem;
 }
 
 .action {
-  border: 0;
-  border-radius: 3rem;
-  background: none;
+  padding: 0.7rem 1.35rem;
+  background-color: transparent;
+  border: var(--keyline) solid var(--ink);
+  border-radius: 0.6rem;
   color: inherit;
   cursor: pointer;
-  font: inherit;
-  padding: 0.85rem 1.5rem;
-  transition: background-color 200ms;
+  font-size: 1.05rem;
+  transition:
+    box-shadow 120ms,
+    transform 120ms;
 }
 
-.action:not(.primary) {
-  border: 1px solid color-mix(in srgb, var(--mat-sys-on-surface) 30%, transparent);
-}
-
-.action:not(.primary):hover {
-  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+/* Fraunces, like the result beside it — but lighter than the 900 the .display class sets. */
+.action.display {
+  font-weight: 700;
 }
 
 .action.primary {
-  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
-  padding: 3px;
-  display: inline-flex;
+  background-color: var(--ink);
+  color: var(--paper);
+  box-shadow: calc(var(--offset) * 0.7) calc(var(--offset) * 0.7) 0 var(--red);
 }
 
-.action.primary .text {
-  background-color: var(--mat-sys-surface);
-  border-radius: 2.5rem;
-  padding: 0.85rem 1.5rem;
-  transition: background-color 300ms;
+.action.primary:active {
+  box-shadow: 0 0 0 var(--red);
+  transform: translate(calc(var(--offset) * 0.7), calc(var(--offset) * 0.7));
 }
 
-.action.primary:hover .text {
-  background: none;
+.action:not(.primary):hover {
+  background-color: color-mix(in srgb, var(--ink) 10%, transparent);
 }
 
 .action:focus-visible {
-  outline: 2px solid #5b42f3;
-  outline-offset: 2px;
+  outline: var(--keyline) solid var(--ink);
+  outline-offset: 3px;
 }
 
-.card.arriving {
-  animation: arrive 260ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+.banner.arriving {
+  animation: arrive 260ms cubic-bezier(0.2, 0.9, 0.3, 1.1);
 }
 
 @keyframes arrive {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: translateY(1.5rem);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 34rem) {
+  .banner {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .actions {
+    margin-left: 0;
+    justify-content: center;
+    width: 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card.arriving {
+  .banner.arriving {
     animation: none;
+  }
+
+  .action {
+    transition: none;
   }
 }

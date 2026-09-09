@@ -29,15 +29,30 @@ export class BoardService {
   board = signal<Field[][]>(this.generateEmptyBoard());
 
   /**
-   * Drops a disk into `column`, returning the row it lands on, or `null` when the column is
-   * out of range or already full.
+   * The row a disk would land on if it were dropped into `column`, or `null` when the column is
+   * out of range or already full. Reads the board without touching it, so the UI can preview a
+   * move on hover.
    */
-  drop(column: number, field: Field): number | null {
-    if (!this.isValidColumn(column) || this.isColumnFull(column)) {
+  nextRow(column: number): number | null {
+    if (!this.isValidColumn(column)) {
       return null;
     }
 
     const row = this.board()[column].indexOf(Field.NONE);
+
+    return row === -1 ? null : row;
+  }
+
+  /**
+   * Drops a disk into `column`, returning the row it lands on, or `null` when the column is
+   * out of range or already full.
+   */
+  drop(column: number, field: Field): number | null {
+    const row = this.nextRow(column);
+
+    if (row === null) {
+      return null;
+    }
 
     this.board.update((currentBoard) => {
       // Replace the board and the touched column instead of mutating them, so zoneless

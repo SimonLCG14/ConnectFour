@@ -9,9 +9,6 @@ import { DiskComponent } from '../disk/disk.component';
   templateUrl: './player.component.html',
   styleUrl: './player.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[style.--player-color]': 'player().color',
-  },
 })
 export class PlayerComponent {
   player = input.required<Player>();

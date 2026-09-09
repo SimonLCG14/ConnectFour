@@ -12,8 +12,10 @@
 
 .item {
   display: block;
+  box-sizing: border-box;
   /* Sized by whoever renders the disk: a board slot fills, a player's pile shrinks. */
   width: var(--disk-size, 2.5rem);
   aspect-ratio: 1;
   border-radius: 50%;
+  border: var(--disk-keyline, var(--keyline)) solid var(--ink);
 }

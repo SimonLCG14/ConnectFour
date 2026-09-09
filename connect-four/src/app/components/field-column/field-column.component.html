@@ -9,9 +9,13 @@
           class="disk"
           animate.enter="dropping"
           [style.--fall-slots]="index + 1"
-          [class.winning]="slot.winning"
+          [style.--fall-ms.ms]="fallMs(index + 1)"
+          [style.--win-index]="slot.winningIndex"
+          [class.winning]="slot.winningIndex >= 0"
           [disk]="{ color: colorFor(slot.field) }"
         ></app-disk>
+      } @else if (slot.row === ghostRow()) {
+        <span class="ghost" [style.border-color]="ghostColor()"></span>
       }
     </div>
   }

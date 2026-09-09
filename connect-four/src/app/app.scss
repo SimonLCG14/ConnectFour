@@ -1,3 +1,13 @@
 .app-container {
-  margin: 1rem;
+  box-sizing: border-box;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+/* The outlet element itself is a grid child; left visible it takes an empty row
+   and pushes the routed component off centre. */
+.app-container > router-outlet {
+  display: none;
 }

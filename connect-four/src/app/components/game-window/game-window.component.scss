@@ -1,21 +1,75 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 2.5vh, 1.75rem);
+  width: 100%;
+}
+
+.masthead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.wordmark {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 3rem);
+}
+
+/* A keyline pill, like everything else on the board. */
+.turn {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.45rem 1.15rem 0.45rem 0.55rem;
+  border: var(--keyline) solid var(--ink);
+  border-radius: 3rem;
+  font-size: 1.1rem;
+}
+
+.turn-disk {
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  border: var(--keyline) solid var(--ink);
+  box-sizing: border-box;
+}
+
+.turn-name {
+  font-weight: 600;
+}
+
+.turn-verb {
+  opacity: 0.65;
+}
+
 .container {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: start;
-  gap: 1.5rem;
-  padding: 1rem;
-  max-width: 70rem;
-  margin: 0 auto;
+  align-items: center;
+  justify-items: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  max-width: 78rem;
 }
 
 .container-item {
   min-width: 0;
+  width: 100%;
+  max-width: 19rem;
+}
+
+#board {
+  width: auto;
+  max-width: none;
 }
 
 @media (max-width: 55rem) {
   .container {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    justify-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   #board {

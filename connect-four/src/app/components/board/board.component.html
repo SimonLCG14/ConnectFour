@@ -1,15 +1,26 @@
-<div class="board-grid">
-  @for (column of columns(); track $index; let columnIndex = $index) {
-    <div class="container">
+<div class="board" [style.--turn-color]="turnColor()" (mouseleave)="hoveredColumn.set(null)">
+  <div class="controls">
+    @for (column of columns(); track $index; let columnIndex = $index) {
       <app-add-button
-        class="button"
         [column]="columnIndex"
         [disabled]="!isColumnPlayable(columnIndex)"
         [label]="'Drop a disk in column ' + (columnIndex + 1)"
         (dropped)="game.play($event)"
+        (mouseenter)="hoveredColumn.set(columnIndex)"
+        (focusin)="hoveredColumn.set(columnIndex)"
       ></app-add-button>
+    }
+  </div>
 
-      <app-field-column class="column" [slots]="column" [colors]="colors()"></app-field-column>
-    </div>
-  }
+  <div class="rack">
+    @for (column of columns(); track $index; let columnIndex = $index) {
+      <app-field-column
+        [slots]="column"
+        [colors]="colors()"
+        [ghostRow]="ghostRow(columnIndex)"
+        [ghostColor]="turnColor()"
+        (mouseenter)="hoveredColumn.set(columnIndex)"
+      ></app-field-column>
+    }
+  </div>
 </div>

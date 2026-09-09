@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { DiskComponent } from '../disk/disk.component';
 import { GameService } from '../../services/game.service';
 
+const NAME_MAX_LENGTH = 15;
+
 @Component({
   selector: 'app-setup',
   imports: [DiskComponent],
@@ -11,13 +13,16 @@ import { GameService } from '../../services/game.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SetupComponent {
+  /** Long enough for a real name, short enough to fit the player card. */
+  readonly nameMaxLength = NAME_MAX_LENGTH;
+
   private readonly game = inject(GameService);
   private readonly router = inject(Router);
 
   playerOneName = signal('Player 1');
   playerTwoName = signal('Player 2');
-  playerOneColor = signal('#3241b8');
-  playerTwoColor = signal('#eb4034');
+  playerOneColor = signal('#e5342a');
+  playerTwoColor = signal('#f2b705');
 
   canStart = computed(
     () =>

@@ -10,11 +10,14 @@
   height: var(--slot-size);
 }
 
+/* The paper showing through the rack, as on the real board. */
 .hole {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent);
+  background-color: var(--paper);
+  border: var(--keyline) solid var(--ink);
+  box-sizing: border-box;
 }
 
 .disk {
@@ -22,38 +25,56 @@
   inset: 0;
 }
 
-.disk.winning {
-  /* The host is square, so round it or the pulse reads as a box. */
+/* Where the disk would land if you played this column. */
+.ghost {
+  position: absolute;
+  inset: 12%;
   border-radius: 50%;
-  animation: pulse 1.2s ease-in-out infinite alternate;
+  border: var(--keyline) dashed currentColor;
+  box-sizing: border-box;
+  opacity: 0.75;
 }
 
-/* Falls from just above the top of its own column into place. */
+/* Falls from just above the top of its own column and settles. */
 .disk.dropping {
-  animation: drop calc(160ms * var(--fall-slots, 1)) cubic-bezier(0.45, 0, 0.7, 1);
+  animation: drop var(--fall-ms, 400ms) cubic-bezier(0.5, 0, 0.9, 0.65);
 }
 
 @keyframes drop {
   from {
     transform: translateY(calc(-1 * (var(--slot-size) + var(--slot-gap)) * var(--fall-slots, 1)));
   }
-  70% {
+  78% {
     transform: translateY(0);
+    animation-timing-function: ease-out;
   }
-  85% {
-    transform: translateY(-12%);
+  89% {
+    transform: translateY(-14%);
   }
   to {
     transform: translateY(0);
   }
 }
 
-@keyframes pulse {
+/* One pop per disk, left to right along the line, then it holds. The heavier keyline
+   stays afterwards so the line is still readable once the motion is over. */
+.disk.winning {
+  --disk-keyline: 5px;
+
+  animation: celebrate 420ms ease-out backwards;
+  animation-delay: calc(var(--win-index, 0) * 110ms);
+  z-index: 1;
+}
+
+@keyframes celebrate {
   from {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--mat-sys-on-surface) 35%, transparent);
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.25);
   }
   to {
-    box-shadow: 0 0 0 0.4rem transparent;
+    transform: scale(1);
   }
 }
 
@@ -61,11 +82,5 @@
   .disk.dropping,
   .disk.winning {
     animation: none;
-  }
-
-  .disk.winning {
-    outline: 3px solid var(--mat-sys-on-surface);
-    outline-offset: 2px;
-    border-radius: 50%;
   }
 }

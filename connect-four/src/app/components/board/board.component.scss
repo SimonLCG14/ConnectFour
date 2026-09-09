@@ -1,21 +1,32 @@
-.board-grid {
-  --slot-size: 2.5rem;
-  --slot-gap: 0.5rem;
+.board {
+  /*
+   * Everything on the board is a multiple of one slot, so the whole thing scales together.
+   * The vh term is tuned so the tallest state — masthead, buttons, rack and the result
+   * banner — still fits a 700px-high window without the page scrolling.
+   */
+  --slot-size: clamp(1.5rem, min(7.5vw, 6.8vh), 3.75rem);
+  --slot-gap: calc(var(--slot-size) * 0.24);
 
-  display: flex;
-  justify-content: center;
-  gap: var(--slot-gap);
-  padding: var(--slot-gap);
-  border-radius: 1rem;
-  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 6%, transparent);
-}
-
-.container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: var(--slot-gap);
 }
 
-.button {
-  margin-bottom: 0.5rem;
+.controls,
+.rack {
+  display: grid;
+  grid-template-columns: repeat(7, var(--slot-size));
+  gap: var(--slot-gap);
+}
+
+/* The rack itself: one solid blue panel with the paper showing through its holes. */
+.rack {
+  padding: var(--slot-gap);
+  background-color: var(--rack);
+  border: var(--keyline) solid var(--ink);
+  border-radius: calc(var(--slot-size) * 0.35);
+}
+
+.controls {
+  padding: 0 var(--slot-gap);
 }
