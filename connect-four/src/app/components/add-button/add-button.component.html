@@ -1,3 +1,8 @@
-<button>
+<button
+  type="button"
+  [disabled]="disabled()"
+  [attr.aria-label]="label()"
+  (click)="dropped.emit(column())"
+>
   <span class="text">+</span>
 </button>

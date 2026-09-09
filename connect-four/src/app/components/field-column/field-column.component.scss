@@ -1,4 +1,71 @@
 .field-column {
   display: flex;
   flex-direction: column;
+  gap: var(--slot-gap);
+}
+
+.slot {
+  position: relative;
+  width: var(--slot-size);
+  height: var(--slot-size);
+}
+
+.hole {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent);
+}
+
+.disk {
+  position: absolute;
+  inset: 0;
+}
+
+.disk.winning {
+  /* The host is square, so round it or the pulse reads as a box. */
+  border-radius: 50%;
+  animation: pulse 1.2s ease-in-out infinite alternate;
+}
+
+/* Falls from just above the top of its own column into place. */
+.disk.dropping {
+  animation: drop calc(160ms * var(--fall-slots, 1)) cubic-bezier(0.45, 0, 0.7, 1);
+}
+
+@keyframes drop {
+  from {
+    transform: translateY(calc(-1 * (var(--slot-size) + var(--slot-gap)) * var(--fall-slots, 1)));
+  }
+  70% {
+    transform: translateY(0);
+  }
+  85% {
+    transform: translateY(-12%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--mat-sys-on-surface) 35%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 0.4rem transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .disk.dropping,
+  .disk.winning {
+    animation: none;
+  }
+
+  .disk.winning {
+    outline: 3px solid var(--mat-sys-on-surface);
+    outline-offset: 2px;
+    border-radius: 50%;
+  }
 }

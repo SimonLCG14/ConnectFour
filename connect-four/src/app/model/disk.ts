@@ -1,3 +1,3 @@
-export type Disk = {
+export interface Disk {
   color: string;
-};
+}

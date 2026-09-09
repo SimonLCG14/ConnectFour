@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Disk } from '../../model/disk';
+import { Player } from '../../model/player';
 import { DiskComponent } from '../disk/disk.component';
 
 @Component({
@@ -9,23 +10,16 @@ import { DiskComponent } from '../disk/disk.component';
   styleUrl: './player.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[style.--player-color]': 'color()',
+    '[style.--player-color]': 'player().color',
   },
 })
-export class PlayerComponent implements OnInit {
-  private readonly AMOUNT_OF_DISKS: number = 21;
+export class PlayerComponent {
+  player = input.required<Player>();
+  remainingDisks = input.required<number>();
+  hasTurn = input<boolean>(false);
 
-  color = input<string>('#f54542');
-  hasTurn = input<boolean>(true);
-  playerName = input<string>('No name');
-
-  remainingDisks = signal<Disk[]>([]);
-
-  amountOfDisks = computed(() => this.remainingDisks().length);
-
-  ngOnInit() {
-    for (let i = 0; i < this.AMOUNT_OF_DISKS; i++) {
-      this.remainingDisks().push({ color: this.color() });
-    }
-  }
+  /** The pile is a view of the count, so it can never drift out of step with the board. */
+  disks = computed<Disk[]>(() =>
+    Array.from({ length: this.remainingDisks() }, () => ({ color: this.player().color })),
+  );
 }

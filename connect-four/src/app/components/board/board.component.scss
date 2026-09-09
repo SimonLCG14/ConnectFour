@@ -1,10 +1,19 @@
 .board-grid {
+  --slot-size: 2.5rem;
+  --slot-gap: 0.5rem;
+
   display: flex;
+  justify-content: center;
+  gap: var(--slot-gap);
+  padding: var(--slot-gap);
+  border-radius: 1rem;
+  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 6%, transparent);
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .button {

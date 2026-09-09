@@ -1,12 +1,19 @@
+:host {
+  display: block;
+}
+
 .disk-item {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .item {
   display: block;
-  width: 2.5rem;
-  height: 2.5rem;
+  /* Sized by whoever renders the disk: a board slot fills, a player's pile shrinks. */
+  width: var(--disk-size, 2.5rem);
+  aspect-ratio: 1;
   border-radius: 50%;
 }

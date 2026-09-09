@@ -1,0 +1,21 @@
+<div class="backdrop" role="dialog" aria-modal="true" aria-labelledby="game-over-headline">
+  <div class="card" animate.enter="arriving">
+    <div class="card-inner">
+      @if (winner(); as player) {
+        <span class="marker" [style.background-color]="player.color"></span>
+        <h2 class="headline" id="game-over-headline">{{ player.name }} wins</h2>
+        <p class="detail">Four in a row.</p>
+      } @else {
+        <h2 class="headline" id="game-over-headline">It's a draw</h2>
+        <p class="detail">Every slot is full and nobody got four in a row.</p>
+      }
+
+      <div class="actions">
+        <button class="action primary" type="button" (click)="restart.emit()">
+          <span class="text">Play again</span>
+        </button>
+        <button class="action" type="button" (click)="changePlayers.emit()">Change players</button>
+      </div>
+    </div>
+  </div>
+</div>

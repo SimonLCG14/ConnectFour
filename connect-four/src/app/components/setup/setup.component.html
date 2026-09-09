@@ -1,0 +1,78 @@
+<div class="setup">
+  <h1 class="title">Connect Four</h1>
+  <p class="lede">Take a seat, pick a disk, and get four in a row.</p>
+
+  <!-- Seats mirror the game layout: player one on the left, player two on the right. -->
+  <div class="seats">
+    <section class="seat card">
+      <div class="seat-inner">
+        <span class="seat-label">First move</span>
+
+        <app-disk class="preview" [disk]="{ color: playerOneColor() }"></app-disk>
+
+        <label class="field">
+          <span class="field-label">Name</span>
+          <input
+            #oneName
+            class="text-input"
+            type="text"
+            autocomplete="off"
+            [value]="playerOneName()"
+            (input)="playerOneName.set(oneName.value)"
+          />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Disk colour</span>
+          <input
+            #oneColor
+            class="color-input"
+            type="color"
+            [value]="playerOneColor()"
+            (input)="playerOneColor.set(oneColor.value)"
+          />
+        </label>
+      </div>
+    </section>
+
+    <section class="seat card">
+      <div class="seat-inner">
+        <span class="seat-label">Second move</span>
+
+        <app-disk class="preview" [disk]="{ color: playerTwoColor() }"></app-disk>
+
+        <label class="field">
+          <span class="field-label">Name</span>
+          <input
+            #twoName
+            class="text-input"
+            type="text"
+            autocomplete="off"
+            [value]="playerTwoName()"
+            (input)="playerTwoName.set(twoName.value)"
+          />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Disk colour</span>
+          <input
+            #twoColor
+            class="color-input"
+            type="color"
+            [value]="playerTwoColor()"
+            (input)="playerTwoColor.set(twoColor.value)"
+          />
+        </label>
+      </div>
+    </section>
+  </div>
+
+  <div class="actions">
+    <button class="start" type="button" [disabled]="!canStart()" (click)="start()">
+      <span class="text">Start the game</span>
+    </button>
+    @if (hint()) {
+      <p class="hint">{{ hint() }}</p>
+    }
+  </div>
+</div>

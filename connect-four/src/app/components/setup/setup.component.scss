@@ -1,0 +1,155 @@
+.setup {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.lede {
+  margin: 0.5rem 0 2.5rem;
+  font-size: 1.125rem;
+  opacity: 0.7;
+}
+
+.seats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+/* Same gradient-edged card as the in-game player panels. */
+.card {
+  display: flex;
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  border-radius: 20px;
+  padding: 3px;
+}
+
+.seat-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background-color: var(--mat-sys-surface);
+}
+
+.seat-label {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.preview {
+  transform: scale(1.6);
+  margin: 0.75rem 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  text-align: left;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.text-input,
+.color-input {
+  width: 100%;
+  border: 1px solid color-mix(in srgb, var(--mat-sys-on-surface) 25%, transparent);
+  border-radius: 0.75rem;
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+}
+
+.color-input {
+  height: 2.5rem;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.text-input:focus-visible,
+.color-input:focus-visible,
+.start:focus-visible {
+  outline: 2px solid #5b42f3;
+  outline-offset: 2px;
+}
+
+.actions {
+  margin-top: 2.5rem;
+}
+
+/* Matches the board's add button. */
+.start {
+  align-items: center;
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  border: 0;
+  border-radius: 3rem;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.125rem;
+  justify-content: center;
+  padding: 3px;
+  transition: transform 0.3s;
+  user-select: none;
+}
+
+.start .text {
+  background-color: var(--mat-sys-surface);
+  border-radius: 2.5rem;
+  padding: 16px 32px;
+  transition: background-color 300ms;
+}
+
+.start:hover:not(:disabled) .text {
+  background: none;
+}
+
+.start:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.start:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+@media (max-width: 40rem) {
+  .seats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .start,
+  .start .text {
+    transition: none;
+  }
+}

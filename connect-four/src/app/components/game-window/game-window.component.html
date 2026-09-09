@@ -1,17 +1,29 @@
-<div class="container">
-  <app-player
-    [color]="'#3241b8'"
-    [hasTurn]="true"
-    [playerName]="'Simon'"
-    id="player1"
-    class="container-item"
-  ></app-player>
-  <app-board id="board" class="container-item"></app-board>
-  <app-player
-    [color]="'#eb4034'"
-    [hasTurn]="true"
-    [playerName]="'Laurin'"
-    id="player2"
-    class="container-item"
-  ></app-player>
-</div>
+@if (game.players(); as players) {
+  <div class="container">
+    <app-player
+      id="player1"
+      class="container-item"
+      [player]="players[0]"
+      [hasTurn]="game.currentPlayerId() === PlayerId.ONE && !game.isOver()"
+      [remainingDisks]="game.remainingDisks(PlayerId.ONE)"
+    ></app-player>
+
+    <app-board id="board" class="container-item"></app-board>
+
+    <app-player
+      id="player2"
+      class="container-item"
+      [player]="players[1]"
+      [hasTurn]="game.currentPlayerId() === PlayerId.TWO && !game.isOver()"
+      [remainingDisks]="game.remainingDisks(PlayerId.TWO)"
+    ></app-player>
+  </div>
+
+  @if (game.isOver()) {
+    <app-game-over
+      [winner]="game.winner()"
+      (restart)="game.restartWithSamePlayers()"
+      (changePlayers)="changePlayers()"
+    ></app-game-over>
+  }
+}

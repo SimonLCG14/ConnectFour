@@ -1,11 +1,15 @@
 <div class="board-grid">
-  @for (row of reversedBoard(); track $index; let rowIndex = $index) {
+  @for (column of columns(); track $index; let columnIndex = $index) {
     <div class="container">
-      <app-add-button class="button"></app-add-button>
-      <app-field-column [fields]="row" class="column"></app-field-column>
+      <app-add-button
+        class="button"
+        [column]="columnIndex"
+        [disabled]="!isColumnPlayable(columnIndex)"
+        [label]="'Drop a disk in column ' + (columnIndex + 1)"
+        (dropped)="game.play($event)"
+      ></app-add-button>
+
+      <app-field-column class="column" [slots]="column" [colors]="colors()"></app-field-column>
     </div>
   }
 </div>
-
-<button (click)="boardService.addDisk(0, Player.RED_PLAYER)">Add Red</button>
-<button (click)="boardService.addDisk(1, Player.BLUE_PLAYER)">Add Blue</button>

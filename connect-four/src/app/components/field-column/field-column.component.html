@@ -1,15 +1,18 @@
 <div class="field-column">
-  @for (field of fields(); track $index) {
-    @switch (field) {
-      @case (Field.RED) {
-        <app-disk [disk]="{ color: 'red' }"></app-disk>
+  @for (slot of slots(); track slot.row; let index = $index) {
+    <div class="slot">
+      <span class="hole"></span>
+
+      @if (slot.field !== Field.NONE) {
+        <!-- The disk enters the DOM as it is played, which is what drives the drop animation. -->
+        <app-disk
+          class="disk"
+          animate.enter="dropping"
+          [style.--fall-slots]="index + 1"
+          [class.winning]="slot.winning"
+          [disk]="{ color: colorFor(slot.field) }"
+        ></app-disk>
       }
-      @case (Field.BLUE) {
-        <app-disk [disk]="{ color: 'blue' }"></app-disk>
-      }
-      @default {
-        <app-disk [disk]="{ color: 'white' }"></app-disk>
-      }
-    }
+    </div>
   }
 </div>

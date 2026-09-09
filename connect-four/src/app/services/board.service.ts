@@ -1,72 +1,131 @@
 import { Injectable, signal } from '@angular/core';
+import { Cell } from '../model/cell';
 import { Field } from '../model/field';
-import { Player } from '../model/player';
 
+/** The four axes a run of four can lie on, expressed as a column/row step. */
+const DIRECTIONS: readonly Cell[] = [
+  { column: 1, row: 0 }, // horizontal
+  { column: 0, row: 1 }, // vertical
+  { column: 1, row: 1 }, // diagonal, up to the right
+  { column: 1, row: -1 }, // diagonal, down to the right
+];
+
+const LINE_LENGTH = 4;
+
+/**
+ * Owns the grid and the rules that operate on it, and nothing else — whose turn it is and
+ * whether the game is over live in `GameService`.
+ *
+ * The board is stored column-major and bottom-up: `board()[column][row]`, where row 0 is the
+ * lowest slot a disk falls into.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
-  private readonly BOARD_HEIGHT: number = 7;
-  private readonly BOARD_POSITIONS: number = 6;
+  readonly COLUMNS = 7;
+  readonly ROWS = 6;
 
   board = signal<Field[][]>(this.generateEmptyBoard());
 
-  private generateEmptyBoard(): Field[][] {
-    const result: Field[][] = [];
-
-    for (let i: number = 0; i < this.BOARD_POSITIONS; i++) {
-      result.push([]);
-
-      for (let j: number = 0; j < this.BOARD_HEIGHT; j++) {
-        result.at(i)?.push(Field.NONE);
-      }
-    }
-    console.log(result);
-
-    return result;
-  }
-
-  public addDisk(position: number, player: Player) {
-    if (position < 0 || position >= this.board().length) {
-      console.warn('Invalid position');
-      alert('Invalid position');
-      return;
+  /**
+   * Drops a disk into `column`, returning the row it lands on, or `null` when the column is
+   * out of range or already full.
+   */
+  drop(column: number, field: Field): number | null {
+    if (!this.isValidColumn(column) || this.isColumnFull(column)) {
+      return null;
     }
 
-    if (
-      this.board()
-        .at(position)!
-        .at(this.BOARD_HEIGHT - 1)! !== Field.NONE
-    ) {
-      console.warn('Position full');
-      alert('Position full');
-      return;
-    }
+    const row = this.board()[column].indexOf(Field.NONE);
 
     this.board.update((currentBoard) => {
-      const targetCol = currentBoard[position];
-      let targetRowIndex = -1;
-
-      for (let i = 0; i < this.BOARD_HEIGHT; i++) {
-        if (targetCol[i] === Field.NONE) {
-          targetRowIndex = i;
-          break;
-        }
-      }
-
-      if (targetRowIndex === -1) {
-        return currentBoard;
-      }
+      // Replace the board and the touched column instead of mutating them, so zoneless
+      // change detection sees a new reference.
       const newBoard = [...currentBoard];
+      const newColumn = [...newBoard[column]];
 
-      const newColumn = [...newBoard[position]];
-
-      newColumn[targetRowIndex] = player === Player.RED_PLAYER ? Field.RED : Field.BLUE;
-      newBoard[position] = newColumn;
+      newColumn[row] = field;
+      newBoard[column] = newColumn;
 
       return newBoard;
     });
 
-    console.log(this.board());
+    return row;
+  }
+
+  /**
+   * Returns every cell of the run through the disk at (`column`, `row`), or `null` when no run
+   * through it reaches four. Scanning outward from the last move is enough — a line can only
+   * be completed by the disk that was just played.
+   */
+  findWinningLine(column: number, row: number): Cell[] | null {
+    const field = this.board()[column][row];
+
+    if (field === Field.NONE) {
+      return null;
+    }
+
+    for (const direction of DIRECTIONS) {
+      const line = [
+        ...this.walk(column, row, field, -direction.column, -direction.row).reverse(),
+        { column, row },
+        ...this.walk(column, row, field, direction.column, direction.row),
+      ];
+
+      if (line.length >= LINE_LENGTH) {
+        return line;
+      }
+    }
+
+    return null;
+  }
+
+  isColumnFull(column: number): boolean {
+    return !this.board()[column].includes(Field.NONE);
+  }
+
+  isFull(): boolean {
+    return this.board().every((column) => !column.includes(Field.NONE));
+  }
+
+  reset(): void {
+    this.board.set(this.generateEmptyBoard());
+  }
+
+  /** Collects the matching disks running away from (`column`, `row`) in one direction. */
+  private walk(
+    column: number,
+    row: number,
+    field: Field,
+    columnStep: number,
+    rowStep: number,
+  ): Cell[] {
+    const cells: Cell[] = [];
+
+    let nextColumn = column + columnStep;
+    let nextRow = row + rowStep;
+
+    while (this.isOnBoard(nextColumn, nextRow) && this.board()[nextColumn][nextRow] === field) {
+      cells.push({ column: nextColumn, row: nextRow });
+      nextColumn += columnStep;
+      nextRow += rowStep;
+    }
+
+    return cells;
+  }
+
+  private isValidColumn(column: number): boolean {
+    return Number.isInteger(column) && column >= 0 && column < this.COLUMNS;
+  }
+
+  private isOnBoard(column: number, row: number): boolean {
+    return this.isValidColumn(column) && row >= 0 && row < this.ROWS;
+  }
+
+  private generateEmptyBoard(): Field[][] {
+    return Array.from({ length: this.COLUMNS }, () =>
+      Array.from({ length: this.ROWS }, () => Field.NONE),
+    );
   }
 }
