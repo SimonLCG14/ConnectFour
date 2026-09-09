@@ -1,5 +1,5 @@
-import {Component, computed, input} from '@angular/core';
-import {Disk} from '../../model/disk';
+import { Component, computed, input } from '@angular/core';
+import { Disk } from '../../model/disk';
 
 @Component({
   selector: 'app-disk',

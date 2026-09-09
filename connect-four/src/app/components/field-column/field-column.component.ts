@@ -1,12 +1,10 @@
-import {Component, input} from '@angular/core';
-import {Field} from '../../model/field';
-import {DiskComponent} from '../disk/disk.component';
+import { Component, input } from '@angular/core';
+import { Field } from '../../model/field';
+import { DiskComponent } from '../disk/disk.component';
 
 @Component({
   selector: 'app-field-column',
-  imports: [
-    DiskComponent
-  ],
+  imports: [DiskComponent],
   templateUrl: './field-column.component.html',
   styleUrl: './field-column.component.scss',
 })

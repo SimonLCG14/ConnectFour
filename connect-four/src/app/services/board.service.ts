@@ -1,6 +1,6 @@
-import {Injectable, signal} from '@angular/core';
-import {Field} from '../model/field';
-import {Player} from '../model/player';
+import { Injectable, signal } from '@angular/core';
+import { Field } from '../model/field';
+import { Player } from '../model/player';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +11,13 @@ export class BoardService {
 
   board = signal<Field[][]>(this.generateEmptyBoard());
 
-  private generateEmptyBoard(): Field[][]{
+  private generateEmptyBoard(): Field[][] {
     const result: Field[][] = [];
 
-    for(let i: number = 0; i < this.BOARD_POSITIONS; i++){
+    for (let i: number = 0; i < this.BOARD_POSITIONS; i++) {
       result.push([]);
 
-      for(let j: number = 0; j < this.BOARD_HEIGHT; j++){
+      for (let j: number = 0; j < this.BOARD_HEIGHT; j++) {
         result.at(i)?.push(Field.NONE);
       }
     }
@@ -26,16 +26,20 @@ export class BoardService {
     return result;
   }
 
-  public addDisk(position: number, player: Player){
+  public addDisk(position: number, player: Player) {
     if (position < 0 || position >= this.board().length) {
-      console.warn("Invalid position");
-      alert("Invalid position");
+      console.warn('Invalid position');
+      alert('Invalid position');
       return;
     }
 
-    if(this.board().at(position)!.at(this.BOARD_HEIGHT - 1)! !== Field.NONE){
-      console.warn("Position full");
-      alert("Position full");
+    if (
+      this.board()
+        .at(position)!
+        .at(this.BOARD_HEIGHT - 1)! !== Field.NONE
+    ) {
+      console.warn('Position full');
+      alert('Position full');
       return;
     }
 
@@ -57,13 +61,12 @@ export class BoardService {
 
       const newColumn = [...newBoard[position]];
 
-      newColumn[targetRowIndex] = (player === Player.RED_PLAYER) ? Field.RED : Field.BLUE;
+      newColumn[targetRowIndex] = player === Player.RED_PLAYER ? Field.RED : Field.BLUE;
       newBoard[position] = newColumn;
 
       return newBoard;
     });
 
-    console.log(this.board())
+    console.log(this.board());
   }
-
 }

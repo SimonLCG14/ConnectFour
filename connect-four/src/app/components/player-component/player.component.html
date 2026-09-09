@@ -1,16 +1,16 @@
 <div class="card" [class.has-turn]="hasTurn()">
   <div class="card2" [class.has-turn]="hasTurn()">
     <div class="player-container">
-      <p class="player-text">{{playerName()}}</p>
+      <p class="player-text">{{ playerName() }}</p>
 
       <!-- Disks -->
       <div class="disk-container">
-        @for(disk of remainingDisks(); track $index){
+        @for (disk of remainingDisks(); track $index) {
           <app-disk [disk]="disk"></app-disk>
         }
       </div>
 
-      <p class="player-text">Remaining Disks: {{amountOfDisks()}}</p>
+      <p class="player-text">Remaining Disks: {{ amountOfDisks() }}</p>
     </div>
   </div>
 </div>

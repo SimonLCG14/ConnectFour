@@ -1,5 +1,5 @@
 export enum Field {
   RED,
   BLUE,
-  NONE
+  NONE,
 }
